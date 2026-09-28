@@ -1,0 +1,3 @@
+import { defineStore } from 'pinia'
+import api from '../services/api'
+export const useAuthStore = defineStore('auth', { state: () => ({ user: JSON.parse(localStorage.getItem('byabsha_user') || 'null') }), actions: { async login(payload) { const { data } = await api.post('/auth/login', { ...payload, device_name: 'Vue Admin Panel' }); localStorage.setItem('byabsha_token', data.token); localStorage.setItem('byabsha_user', JSON.stringify(data.user)); this.user = data.user }, async logout() { try { await api.post('/auth/logout') } finally { localStorage.removeItem('byabsha_token'); localStorage.removeItem('byabsha_user'); this.user = null } } } })
